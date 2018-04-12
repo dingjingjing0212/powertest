@@ -1,0 +1,8 @@
+"STARTUP.obj",
+"POWER_METER_main.obj",
+"IIC.obj",
+"common.obj",
+"LCD1602.obj",
+"INA219_DRV.obj" 
+TO "POWER_METER" 
+RAMSIZE(256) 

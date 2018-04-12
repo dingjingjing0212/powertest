@@ -1,0 +1,690 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        01/29/2018  17:41:56  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE STARTUP.obj, POWER_METER_main.obj, IIC.obj, common.obj, LCD1602.obj, INA219_DRV.obj TO POWER_ME
+>> TER RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  POWER_METER_main.obj (POWER_METER_MAIN)
+  IIC.obj (IIC)
+  common.obj (COMMON)
+  LCD1602.obj (LCD1602)
+  INA219_DRV.obj (INA219_DRV)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?IMUL)
+
+
+LINK MAP OF MODULE:  POWER_METER (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0005H     UNIT         ?DT?_PRINTSTR?LCD1602
+            DATA    000DH     0005H     UNIT         _DATA_GROUP_
+            DATA    0012H     0001H     UNIT         ?DT?LCD_WRITEREG?LCD1602
+                    0013H     000DH                  *** GAP ***
+            BIT     0020H.0   0000H.2   UNIT         ?BI?POWER_METER_MAIN
+            BIT     0020H.2   0000H.2   UNIT         _BIT_GROUP_
+            BIT     0020H.4   0000H.1   UNIT         ?BI?LCD_WRITEREG?LCD1602
+            BIT     0020H.5   0000H.1   UNIT         ?BI?LCD_READREG?LCD1602
+                    0020H.6   0000H.2                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     008CH     UNIT         ?C_C51STARTUP
+            CODE    008FH     0076H     UNIT         ?PR?LCD_INIT?LCD1602
+            CODE    0105H     005BH     UNIT         ?PR?_PRINTSTR?LCD1602
+            CODE    0160H     0057H     UNIT         ?PR?_INA219_READREG?INA219_DRV
+            CODE    01B7H     003FH     UNIT         ?C?LIB_CODE
+            CODE    01F6H     003DH     UNIT         ?PR?_INA219_WRITEREG?INA219_DRV
+            CODE    0233H     003AH     UNIT         ?PR?MAIN?POWER_METER_MAIN
+            CODE    026DH     0025H     UNIT         ?PR?_PRINTCHAR?LCD1602
+            CODE    0292H     0024H     UNIT         ?PR?_REFRESHDATA?POWER_METER_MAIN
+            CODE    02B6H     0022H     UNIT         ?PR?_SETCOORDINATE?LCD1602
+            CODE    02D8H     001AH     UNIT         ?PR?_INA219_GETBUSVOLT?INA219_DRV
+            CODE    02F2H     0018H     UNIT         ?PR?IIC_RECVONEBYTE?IIC
+            CODE    030AH     0016H     UNIT         ?PR?_INA219_INIT?INA219_DRV
+            CODE    0320H     0015H     UNIT         ?PR?_DELAY?POWER_METER_MAIN
+            CODE    0335H     0014H     UNIT         ?PR?_INA219_GETPOWER?INA219_DRV
+            CODE    0349H     0013H     UNIT         ?PR?LCD_WRITEREG?LCD1602
+            CODE    035CH     0011H     UNIT         ?PR?_IIC_SENDONEBYTE?IIC
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 2
+
+
+            CODE    036DH     0010H     UNIT         ?PR?LCD_READREG?LCD1602
+            CODE    037DH     000EH     UNIT         ?PR?_SEND_CHAR_COM?POWER_METER_MAIN
+            CODE    038BH     000DH     UNIT         ?PR?IIC_RECVACK_ERROR?IIC
+            CODE    0398H     000CH     UNIT         ?PR?_DELAY_US?COMMON
+            CODE    03A4H     000BH     UNIT         ?PR?IIC_SENDACK?IIC
+            CODE    03AFH     0009H     UNIT         ?PR?IIC_START?IIC
+            CODE    03B8H     0007H     UNIT         ?PR?IIC_STOP?IIC
+            CODE    03BFH     0006H     UNIT         ?PR?_INA219_GETCURRENT?INA219_DRV
+            CODE    03C5H     0005H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   POWER_METER (?C_STARTUP)
+
+
+SEGMENT                                        BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT                       START    LENGTH     START    LENGTH
+-------------------------------------------------------------------------------
+?C_C51STARTUP                               -----    -----      -----    -----
+  +--> ?PR?MAIN?POWER_METER_MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?POWER_METER_MAIN                   -----    -----      -----    -----
+  +--> ?PR?_INA219_INIT?INA219_DRV
+  +--> ?PR?_REFRESHDATA?POWER_METER_MAIN
+
+?PR?_INA219_INIT?INA219_DRV                 -----    -----      000DH    0001H
+  +--> ?PR?_INA219_WRITEREG?INA219_DRV
+
+?PR?_INA219_WRITEREG?INA219_DRV             0020H.2  0000H.1    000EH    0004H
+  +--> ?PR?IIC_START?IIC
+  +--> ?PR?_IIC_SENDONEBYTE?IIC
+  +--> ?PR?IIC_RECVACK_ERROR?IIC
+  +--> ?PR?IIC_STOP?IIC
+
+?PR?IIC_RECVACK_ERROR?IIC                   0020H.3  0000H.1    -----    -----
+
+?PR?_REFRESHDATA?POWER_METER_MAIN           -----    -----      000DH    0001H
+  +--> ?PR?_INA219_GETCURRENT?INA219_DRV
+  +--> ?PR?_SEND_CHAR_COM?POWER_METER_MAIN
+
+?PR?_INA219_GETCURRENT?INA219_DRV           -----    -----      -----    -----
+  +--> ?PR?_INA219_READREG?INA219_DRV
+
+?PR?_INA219_READREG?INA219_DRV              -----    -----      000EH    0004H
+  +--> ?PR?IIC_START?IIC
+  +--> ?PR?_IIC_SENDONEBYTE?IIC
+  +--> ?PR?IIC_RECVACK_ERROR?IIC
+  +--> ?PR?IIC_RECVONEBYTE?IIC
+  +--> ?PR?IIC_SENDACK?IIC
+  +--> ?PR?IIC_STOP?IIC
+
+?PR?IIC_SENDACK?IIC                         0020H.2  0000H.1    -----    -----
+
+
+
+SYMBOL TABLE OF MODULE:  POWER_METER (?C_STARTUP)
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 3
+
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0003H         SEGMENT       ?C_C51STARTUP
+  I:0021H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0006H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0003H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0003H         LINE#         133
+  C:0005H         LINE#         134
+  C:0006H         LINE#         135
+  C:0007H         LINE#         136
+  C:0009H         LINE#         185
+  C:000CH         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        POWER_METER_MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0320H         PUBLIC        _delay
+  B:00A8H.4       PUBLIC        ES
+  D:00B8H         PUBLIC        IP
+  B:0098H.1       PUBLIC        TI
+  D:00D8H         PUBLIC        CCON
+  C:0233H         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0087H         PUBLIC        PCON
+  D:00C0H         PUBLIC        WDTC
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008DH         PUBLIC        TH1
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 4
+
+
+  C:037DH         PUBLIC        _send_char_com
+  D:00E8H         PUBLIC        IEA
+  C:0292H         PUBLIC        _RefreshData
+  B:0020H.0       PUBLIC        RefreshFlag
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  D:00F8H         PUBLIC        IPA
+  B:0020H.1       PUBLIC        RefreshRate
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        i
+  -------         DO            
+  D:0005H         SYMBOL        j
+  -------         ENDDO         
+  C:0320H         LINE#         13
+  C:0320H         LINE#         14
+  C:0320H         LINE#         16
+  C:0329H         LINE#         17
+  C:0334H         LINE#         18
+  -------         ENDPROC       _DELAY
+  -------         PROC          _SEND_CHAR_COM
+  D:0007H         SYMBOL        ch
+  C:037DH         LINE#         20
+  C:037DH         LINE#         21
+  C:037FH         LINE#         22
+  C:0381H         LINE#         23
+  C:0383H         LINE#         24
+  C:0386H         LINE#         25
+  C:0388H         LINE#         26
+  C:038AH         LINE#         27
+  -------         ENDPROC       _SEND_CHAR_COM
+  -------         PROC          _REFRESHDATA
+  D:000DH         SYMBOL        WAddree
+  -------         DO            
+  D:0004H         SYMBOL        AfterCurrent
+  D:0006H         SYMBOL        Current
+  -------         ENDDO         
+  C:0292H         LINE#         29
+  C:0294H         LINE#         30
+  C:0294H         LINE#         42
+  C:0297H         LINE#         43
+  C:029BH         LINE#         44
+  C:02A0H         LINE#         45
+  C:02A5H         LINE#         46
+  C:02AAH         LINE#         47
+  C:02AFH         LINE#         48
+  C:02B2H         LINE#         50
+  C:02B5H         LINE#         72
+  -------         ENDPROC       _REFRESHDATA
+  -------         PROC          MAIN
+  C:0233H         LINE#         74
+  C:0233H         LINE#         75
+  C:0233H         LINE#         76
+  C:0238H         LINE#         77
+  C:023DH         LINE#         78
+  C:0240H         LINE#         79
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 5
+
+
+  C:0243H         LINE#         80
+  C:0246H         LINE#         81
+  C:0249H         LINE#         82
+  C:024CH         LINE#         83
+  C:024FH         LINE#         84
+  C:0251H         LINE#         85
+  C:0253H         LINE#         86
+  C:0255H         LINE#         102
+  C:025AH         LINE#         103
+  C:025FH         LINE#         109
+  C:025FH         LINE#         110
+  C:025FH         LINE#         111
+  C:025FH         LINE#         112
+  C:025FH         LINE#         113
+  C:0264H         LINE#         114
+  C:0269H         LINE#         115
+  C:026BH         LINE#         117
+  C:026BH         LINE#         135
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        POWER_METER_MAIN
+
+  -------         MODULE        IIC
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:02F2H         PUBLIC        IIC_RecvOneByte
+  C:038BH         PUBLIC        IIC_RecvACK_Error
+  D:00A8H         PUBLIC        IE
+  C:03A4H         PUBLIC        IIC_SendACK
+  D:00B8H         PUBLIC        IP
+  B:00D0H.7       PUBLIC        CY
+  D:00D8H         PUBLIC        CCON
+  D:00C0H         PUBLIC        WDTC
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:03AFH         PUBLIC        IIC_Start
+  D:00E8H         PUBLIC        IEA
+  B:0080H.1       PUBLIC        SDA
+  D:00F8H         PUBLIC        IPA
+  C:03B8H         PUBLIC        IIC_Stop
+  B:0080H.0       PUBLIC        SCL
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  C:035CH         PUBLIC        _IIC_SendOneByte
+  -------         PROC          IIC_START
+  C:03AFH         LINE#         12
+  C:03AFH         LINE#         13
+  C:03AFH         LINE#         14
+  C:03B1H         LINE#         15
+  C:03B3H         LINE#         16
+  C:03B5H         LINE#         17
+  C:03B7H         LINE#         18
+  -------         ENDPROC       IIC_START
+  -------         PROC          IIC_STOP
+  C:03B8H         LINE#         20
+  C:03B8H         LINE#         21
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 6
+
+
+  C:03B8H         LINE#         22
+  C:03BAH         LINE#         23
+  C:03BCH         LINE#         24
+  C:03BEH         LINE#         25
+  -------         ENDPROC       IIC_STOP
+  -------         PROC          IIC_SENDACK
+  B:0020H.2       SYMBOL        ACK_Type
+  C:03A4H         LINE#         27
+  C:03A4H         LINE#         28
+  C:03A4H         LINE#         29
+  C:03A8H         LINE#         30
+  C:03AAH         LINE#         31
+  C:03ACH         LINE#         32
+  C:03AEH         LINE#         33
+  -------         ENDPROC       IIC_SENDACK
+  -------         PROC          IIC_RECVACK_ERROR
+  -------         DO            
+  B:0020H.3       SYMBOL        RecvAckError
+  -------         ENDDO         
+  C:038BH         LINE#         35
+  C:038BH         LINE#         36
+  C:038BH         LINE#         39
+  C:038DH         LINE#         40
+  C:038FH         LINE#         41
+  C:0393H         LINE#         42
+  C:0395H         LINE#         44
+  C:0397H         LINE#         45
+  -------         ENDPROC       IIC_RECVACK_ERROR
+  -------         PROC          _IIC_SENDONEBYTE
+  D:0007H         SYMBOL        TxValue
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:035CH         LINE#         47
+  C:035CH         LINE#         48
+  C:035CH         LINE#         51
+  C:035EH         LINE#         52
+  C:035EH         LINE#         53
+  C:0362H         LINE#         54
+  C:0364H         LINE#         55
+  C:0366H         LINE#         56
+  C:0368H         LINE#         57
+  C:036CH         LINE#         58
+  -------         ENDPROC       _IIC_SENDONEBYTE
+  -------         PROC          IIC_RECVONEBYTE
+  -------         DO            
+  D:0007H         SYMBOL        RxValue
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:02F2H         LINE#         60
+  C:02F2H         LINE#         61
+  C:02F2H         LINE#         62
+  C:02F4H         LINE#         65
+  C:02F6H         LINE#         66
+  C:02F7H         LINE#         67
+  C:02F7H         LINE#         68
+  C:02FBH         LINE#         69
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 7
+
+
+  C:02FDH         LINE#         70
+  C:0303H         LINE#         71
+  C:0305H         LINE#         72
+  C:0309H         LINE#         74
+  C:0309H         LINE#         75
+  -------         ENDPROC       IIC_RECVONEBYTE
+  -------         ENDMOD        IIC
+
+  -------         MODULE        COMMON
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  D:00D8H         PUBLIC        CCON
+  D:00C0H         PUBLIC        WDTC
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0398H         PUBLIC        _Delay_us
+  D:00E8H         PUBLIC        IEA
+  D:00F8H         PUBLIC        IPA
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAY_US
+  D:0006H         SYMBOL        DelayCycle
+  C:0398H         LINE#         3
+  C:0398H         LINE#         4
+  C:0398H         LINE#         5
+  C:039CH         LINE#         6
+  C:03A3H         LINE#         7
+  -------         ENDPROC       _DELAY_US
+  -------         ENDMOD        COMMON
+
+  -------         MODULE        LCD1602
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:026DH         PUBLIC        _PrintChar
+  D:00B8H         PUBLIC        IP
+  D:00D8H         PUBLIC        CCON
+  D:00C0H         PUBLIC        WDTC
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:02B6H         PUBLIC        _SetCoordinate
+  B:0080H.4       PUBLIC        LCD_EN
+  C:008FH         PUBLIC        LCD_Init
+  C:0105H         PUBLIC        _PrintStr
+  D:00E8H         PUBLIC        IEA
+  C:036DH         PUBLIC        LCD_ReadReg
+  B:0080H.2       PUBLIC        LCD_RS
+  D:00F8H         PUBLIC        IPA
+  B:0080H.3       PUBLIC        LCD_RW
+  C:034EH         PUBLIC        LCD_WriteReg
+  D:00C8H         PUBLIC        T2CON
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 8
+
+
+  D:00D0H         PUBLIC        PSW
+  C:0349H         SYMBOL        L?0029
+  -------         PROC          L?0028
+  -------         ENDPROC       L?0028
+  C:0349H         SYMBOL        L?0029
+  -------         PROC          LCD_WRITEREG
+  B:0020H.4       SYMBOL        RegType
+  D:0012H         SYMBOL        RegValue
+  C:034EH         LINE#         6
+  C:034EH         LINE#         7
+  C:034EH         LINE#         8
+  C:0352H         LINE#         9
+  C:0354H         LINE#         10
+  C:0356H         LINE#         11
+  C:0359H         LINE#         12
+  C:035BH         LINE#         13
+  -------         ENDPROC       LCD_WRITEREG
+  -------         PROC          LCD_READREG
+  B:0020H.5       SYMBOL        RegType
+  -------         DO            
+  D:0007H         SYMBOL        RegValue
+  -------         ENDDO         
+  C:036DH         LINE#         15
+  C:036DH         LINE#         16
+  C:036DH         LINE#         19
+  C:0371H         LINE#         20
+  C:0373H         LINE#         21
+  C:0376H         LINE#         22
+  C:0378H         LINE#         23
+  C:037AH         LINE#         24
+  C:037CH         LINE#         26
+  C:037CH         LINE#         27
+  -------         ENDPROC       LCD_READREG
+  -------         PROC          LCD_INIT
+  C:008FH         LINE#         29
+  C:008FH         LINE#         30
+  C:008FH         LINE#         31
+  C:0096H         LINE#         33
+  C:0099H         LINE#         34
+  C:00A0H         LINE#         35
+  C:00A3H         LINE#         36
+  C:00AAH         LINE#         37
+  C:00ADH         LINE#         39
+  C:00BBH         LINE#         40
+  C:00C3H         LINE#         41
+  C:00D1H         LINE#         42
+  C:00D9H         LINE#         43
+  C:00E7H         LINE#         44
+  C:00EFH         LINE#         45
+  C:00FDH         LINE#         46
+  -------         ENDPROC       LCD_INIT
+  -------         PROC          _SETCOORDINATE
+  D:0007H         SYMBOL        x
+  D:0005H         SYMBOL        y
+  -------         DO            
+  D:0006H         SYMBOL        RAM_Addr
+  -------         ENDDO         
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 9
+
+
+  C:02B6H         LINE#         50
+  C:02B6H         LINE#         51
+  C:02B6H         LINE#         54
+  C:02B9H         LINE#         55
+  C:02BFH         LINE#         57
+  C:02C3H         LINE#         58
+  C:02D1H         LINE#         59
+  -------         ENDPROC       _SETCOORDINATE
+  -------         PROC          _PRINTCHAR
+  D:0007H         SYMBOL        x
+  D:0005H         SYMBOL        y
+  D:0003H         SYMBOL        Character
+  C:026DH         LINE#         62
+  C:026DH         LINE#         63
+  C:026DH         LINE#         64
+  C:0279H         LINE#         65
+  C:0279H         LINE#         66
+  C:027CH         LINE#         67
+  C:028AH         LINE#         68
+  C:0291H         LINE#         69
+  C:0291H         LINE#         70
+  -------         ENDPROC       _PRINTCHAR
+  -------         PROC          _PRINTSTR
+  D:0008H         SYMBOL        x
+  D:0005H         SYMBOL        y
+  D:0009H         SYMBOL        Str
+  -------         DO            
+  D:000CH         SYMBOL        Idx
+  -------         ENDDO         
+  C:0105H         LINE#         72
+  C:010DH         LINE#         73
+  C:010DH         LINE#         74
+  C:0110H         LINE#         76
+  C:0113H         LINE#         77
+  C:0124H         LINE#         78
+  C:0124H         LINE#         79
+  C:0132H         LINE#         80
+  C:0148H         LINE#         81
+  C:015BH         LINE#         82
+  C:015FH         LINE#         84
+  C:015FH         LINE#         85
+  C:015FH         LINE#         86
+  -------         ENDPROC       _PRINTSTR
+  -------         ENDMOD        LCD1602
+
+  -------         MODULE        INA219_DRV
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:01F6H         PUBLIC        _INA219_WriteReg
+  C:0335H         PUBLIC        _INA219_GetPower
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  D:00D8H         PUBLIC        CCON
+  D:00C0H         PUBLIC        WDTC
+  D:0098H         PUBLIC        SCON
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 10
+
+
+  D:0088H         PUBLIC        TCON
+  C:02D8H         PUBLIC        _INA219_GetBusVolt
+  D:00E8H         PUBLIC        IEA
+  D:00F8H         PUBLIC        IPA
+  C:03BFH         PUBLIC        _INA219_GetCurrent
+  D:00C8H         PUBLIC        T2CON
+  C:030AH         PUBLIC        _INA219_Init
+  C:0160H         PUBLIC        _INA219_ReadReg
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _INA219_READREG
+  D:000EH         SYMBOL        WAddree
+  D:000FH         SYMBOL        RegBase
+  -------         DO            
+  D:0010H         SYMBOL        RegValue
+  -------         ENDDO         
+  C:0160H         LINE#         4
+  C:0164H         LINE#         5
+  C:0164H         LINE#         6
+  C:0169H         LINE#         8
+  C:016CH         LINE#         9
+  C:0171H         LINE#         10
+  C:0176H         LINE#         11
+  C:0176H         LINE#         12
+  C:017BH         LINE#         13
+  C:0180H         LINE#         14
+  C:0180H         LINE#         16
+  C:0183H         LINE#         17
+  C:018AH         LINE#         18
+  C:018FH         LINE#         19
+  C:018FH         LINE#         20
+  C:0197H         LINE#         21
+  C:019CH         LINE#         22
+  C:01A3H         LINE#         23
+  C:01AAH         LINE#         24
+  C:01AFH         LINE#         25
+  C:01AFH         LINE#         26
+  C:01AFH         LINE#         27
+  C:01AFH         LINE#         28
+  C:01B2H         LINE#         30
+  C:01B6H         LINE#         31
+  -------         ENDPROC       _INA219_READREG
+  -------         PROC          _INA219_WRITEREG
+  D:000EH         SYMBOL        WAddree
+  D:000FH         SYMBOL        RegBase
+  D:0010H         SYMBOL        RegValue
+  -------         DO            
+  B:0020H.2       SYMBOL        WrRegError
+  -------         ENDDO         
+  C:01F6H         LINE#         33
+  C:01FEH         LINE#         34
+  C:01FEH         LINE#         35
+  C:0200H         LINE#         37
+  C:0203H         LINE#         38
+  C:0208H         LINE#         39
+  C:020DH         LINE#         40
+  C:020DH         LINE#         41
+  C:0212H         LINE#         42
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 11
+
+
+  C:0217H         LINE#         43
+  C:0217H         LINE#         44
+  C:021DH         LINE#         45
+  C:0220H         LINE#         46
+  C:0227H         LINE#         47
+  C:022CH         LINE#         48
+  C:022CH         LINE#         49
+  C:022CH         LINE#         50
+  C:022FH         LINE#         52
+  C:0232H         LINE#         53
+  -------         ENDPROC       _INA219_WRITEREG
+  -------         PROC          _INA219_INIT
+  D:000DH         SYMBOL        WAddree
+  C:030AH         LINE#         55
+  C:030CH         LINE#         56
+  C:030CH         LINE#         57
+  C:0315H         LINE#         58
+  -------         ENDPROC       _INA219_INIT
+  -------         PROC          _INA219_GETBUSVOLT
+  D:0007H         SYMBOL        WAddree
+  -------         DO            
+  D:0006H         SYMBOL        BusVoltRegVal
+  -------         ENDDO         
+  C:02D8H         LINE#         61
+  C:02D8H         LINE#         62
+  C:02D8H         LINE#         63
+  C:02DDH         LINE#         64
+  C:02E1H         LINE#         65
+  C:02E6H         LINE#         67
+  C:02F1H         LINE#         68
+  -------         ENDPROC       _INA219_GETBUSVOLT
+  -------         PROC          _INA219_GETPOWER
+  D:0007H         SYMBOL        WAddree
+  -------         DO            
+  D:0006H         SYMBOL        PowerRegVal
+  -------         ENDDO         
+  C:0335H         LINE#         70
+  C:0335H         LINE#         71
+  C:0335H         LINE#         72
+  C:033AH         LINE#         73
+  C:0348H         LINE#         74
+  -------         ENDPROC       _INA219_GETPOWER
+  -------         PROC          _INA219_GETCURRENT
+  D:0007H         SYMBOL        WAddree
+  -------         DO            
+  D:0006H         SYMBOL        CurrentRegVal
+  -------         ENDDO         
+  C:03BFH         LINE#         76
+  C:03BFH         LINE#         77
+  C:03BFH         LINE#         78
+  C:03C4H         LINE#         79
+  C:03C4H         LINE#         80
+  -------         ENDPROC       _INA219_GETCURRENT
+  -------         ENDMOD        INA219_DRV
+
+  -------         MODULE        ?C?CLDOPTR
+  C:01B7H         PUBLIC        ?C?CLDOPTR
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/29/2018  17:41:56  PAGE 12
+
+
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?IMUL
+  C:01E4H         PUBLIC        ?C?IMUL
+  -------         ENDMOD        ?C?IMUL
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?POWER_METER_MAIN
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_INIT?LCD1602
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PRINTCHAR?LCD1602
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PRINTSTR?LCD1602
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_INA219_GETBUSVOLT?INA219_DRV
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_INA219_GETPOWER?INA219_DRV
+
+Program Size: data=20.6 xdata=0 code=970
+LINK/LOCATE RUN COMPLETE.  6 WARNING(S),  0 ERROR(S)

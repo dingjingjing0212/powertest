@@ -1,0 +1,108 @@
+C51 COMPILER V9.00   INA219_DRV                                                            01/29/2018 17:41:56 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE INA219_DRV
+OBJECT MODULE PLACED IN INA219_DRV.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE INA219_DRV\INA219_DRV.c BROWSE DEBUG OBJECTEXTEND PRINT(.\INA219_DRV.lst) O
+                    -BJECT(INA219_DRV.obj)
+
+line level    source
+
+   1          #include "INA219_DRV.h"
+   2          #include "..\IIC\IIC.h"
+   3          
+   4          unsigned short INA219_ReadReg(unsigned char WAddree,unsigned char RegBase)
+   5          {
+   6   1              unsigned short RegValue = 0;
+   7   1      
+   8   1              IIC_Start();
+   9   1              IIC_SendOneByte(WAddree);
+  10   1              if(!IIC_RecvACK_Error())
+  11   1              {
+  12   2                      IIC_SendOneByte(RegBase);
+  13   2                      if(!IIC_RecvACK_Error())
+  14   2                      {
+  15   3                              //IIC_Stop();
+  16   3                              IIC_Start();
+  17   3                              IIC_SendOneByte(WAddree+1);
+  18   3                              if(!IIC_RecvACK_Error())
+  19   3                              {
+  20   4                                      RegValue = IIC_RecvOneByte();
+  21   4                                      IIC_SendACK(ACK);
+  22   4                                      RegValue = RegValue << 8; 
+  23   4                                      RegValue |= IIC_RecvOneByte();
+  24   4                                      IIC_SendACK(NACK);
+  25   4                              }
+  26   3                      }
+  27   2              }
+  28   1              IIC_Stop();
+  29   1      
+  30   1              return RegValue;
+  31   1      }
+  32          
+  33          bit INA219_WriteReg(unsigned char WAddree,unsigned char RegBase, unsigned short RegValue)
+  34          {
+  35   1              bit WrRegError = 1;
+  36   1      
+  37   1              IIC_Start();
+  38   1              IIC_SendOneByte(WAddree);
+  39   1              if(!IIC_RecvACK_Error())
+  40   1              {
+  41   2                      IIC_SendOneByte(RegBase);
+  42   2                      if(!IIC_RecvACK_Error())
+  43   2                      {
+  44   3                              IIC_SendOneByte((RegValue & 0xFF00) >> 8);
+  45   3                              IIC_RecvACK_Error();
+  46   3                              IIC_SendOneByte(RegValue & 0x00FF);
+  47   3                              WrRegError = IIC_RecvACK_Error();
+  48   3                      }
+  49   2              }
+  50   1              IIC_Stop();
+  51   1      
+  52   1              return !WrRegError;
+  53   1      }
+  54          
+C51 COMPILER V9.00   INA219_DRV                                                            01/29/2018 17:41:56 PAGE 2   
+
+  55          void INA219_Init(unsigned char WAddree)
+  56          {
+  57   1              INA219_WriteReg(WAddree,0x00, 0x399F);//16V FSR, GAIN = 1, 16 samples, Shunt and Bus, Continuous. 0x0667
+  58   1              INA219_WriteReg(WAddree,0x05, 0x0C80);//Use INA219 EVM software to calculate a full-scale calibration val
+             -ue (initial calbration), and then compute the corrected full-scale calibration value based on measured current (second c
+             -albration). 
+  59   1      }
+  60          
+  61          unsigned short INA219_GetBusVolt(unsigned char WAddree)
+  62          {
+  63   1              unsigned short BusVoltRegVal = INA219_ReadReg(WAddree,0x02);
+  64   1              if(BusVoltRegVal & 0x0001)                                                              //Overflow
+  65   1                      return 0x0FA0;
+  66   1              else
+  67   1                      return (BusVoltRegVal & 0xFFF8) >> 1;           //((BusVoltRegVal & 0xFFF8) >> 3)*4mV
+  68   1      }
+  69          
+  70          unsigned short INA219_GetPower(unsigned char WAddree)
+  71          {
+  72   1              unsigned short PowerRegVal = INA219_ReadReg(WAddree,0x03);
+  73   1              return (PowerRegVal >> 1)*5;                                                    //2.5mW/bit
+  74   1      }
+  75          
+  76          unsigned short INA219_GetCurrent(unsigned char WAddree)
+  77          {
+  78   1              unsigned short CurrentRegVal = INA219_ReadReg(WAddree,0x04);
+  79   1              return CurrentRegVal ;                                                          //0.125mA/bit
+  80   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    222    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       9
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

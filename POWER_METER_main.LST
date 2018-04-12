@@ -1,0 +1,183 @@
+C51 COMPILER V9.00   POWER_METER_MAIN                                                      01/29/2018 17:41:55 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE POWER_METER_MAIN
+OBJECT MODULE PLACED IN POWER_METER_main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE POWER_METER_main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "LCD1602\LCD1602.h"
+   2          #include "INA219_DRV\INA219_DRV.h"
+   3          #include "common\common.h"
+   4                  
+   5          #define TH0_VALUE 0x4B
+   6          #define TL0_VALUE 0xFF                                                                          //50ms per cycle.
+   7          
+   8          sbit BtnRefreshMode = P3^2;
+   9          bit RefreshRate = 0;                                                                                    //0: 0.8s, 1: 0.5s
+  10          bit RefreshFlag = 0;
+  11          
+  12          /*******延时函数*************/
+  13          void delay(unsigned int i)
+  14          {
+  15   1          unsigned char j;
+  16   1          for(i; i > 0; i--)   
+  17   1              for(j = 255; j > 0; j--);
+  18   1      }
+  19          
+  20          void send_char_com( unsigned char ch) 
+  21           {  ES=0;
+  22   1              TI=0;
+  23   1              SBUF=ch; 
+  24   1              while (!TI );
+  25   1          TI= 0 ;
+  26   1               ES=1 ;
+  27   1              }  
+  28          
+  29          void RefreshData(unsigned char WAddree)
+  30          {
+  31   1      //      unsigned short BusVolt, Current, Power;
+  32   1      //      unsigned short OffsetCurrent, OffsetPower;
+  33   1              unsigned short AfterCurrent, Current            ;
+  34   1      //      BusVolt = INA219_GetBusVolt(WAddree);
+  35   1      //      PrintChar(0, 0, BusVolt/10000+48);
+  36   1      //      PrintChar(1, 0, (BusVolt%10000)/1000+48);
+  37   1      //      PrintChar(3, 0, (BusVolt%1000)/100+48);
+  38   1      //      PrintChar(4, 0, (BusVolt%100)/10+48);
+  39   1      //      PrintChar(5, 0, BusVolt%10+48);
+  40   1                      
+  41   1      //      OffsetCurrent = (BusVolt >> 9) + 2;                     //Gather statistics of the measured current under various voltage
+             - conditions when no load is connected to the output port. Use Excel to do curve fitting.
+  42   1              Current = INA219_GetCurrent(WAddree);
+  43   1              AfterCurrent=Current;
+  44   1                      send_char_com(0x00EF) ;
+  45   1              send_char_com(WAddree) ;
+  46   1              send_char_com((AfterCurrent & 0xFF00) >> 8) ;
+  47   1                      send_char_com(AfterCurrent & 0x00FF) ;
+  48   1                      P1  = 0x00; //置P0口为低电平 
+  49   1      //        delay(30);
+  50   1        P1  = 0xff; //置P0口为高电平
+  51   1       //delay(30);
+  52   1      //      if(Current > OffsetCurrent)
+  53   1      //              Current -= OffsetCurrent;
+  54   1      //      else
+C51 COMPILER V9.00   POWER_METER_MAIN                                                      01/29/2018 17:41:55 PAGE 2   
+
+  55   1      //              Current = 0;
+  56   1      //      PrintChar(10, 0, Current/1000+48);
+  57   1      //      PrintChar(12, 0, (Current%1000)/100+48);
+  58   1      //      PrintChar(13, 0, (Current%100)/10+48);
+  59   1      //      PrintChar(14, 0, Current%10+48);
+  60   1                      
+  61   1      //      OffsetPower = ((BusVolt >> 3) * OffsetCurrent)/125 + 6;
+  62   1      //      Power = INA219_GetPower(WAddree);
+  63   1      //      if(Power > OffsetPower)
+  64   1      //              Power -= OffsetPower;
+  65   1      //      else
+  66   1      //              Power = 0;
+  67   1      //      PrintChar(0, 1, Power/10000+48);
+  68   1      //      PrintChar(1, 1, (Power%10000)/1000+48);
+  69   1      //      PrintChar(3, 1, (Power%1000)/100+48);
+  70   1      //      PrintChar(4, 1, (Power%100)/10+48);
+  71   1      //      PrintChar(5, 1, Power%10+48);
+  72   1      }
+  73          
+  74          int main(void)
+  75          {         
+  76   1              INA219_Init(0x80);
+  77   1              INA219_Init(0x8a);
+  78   1              SCON = 0x50; //串口方式1,允许接收
+  79   1              TMOD = 0x20; //定时器1定时方式2
+  80   1              PCON=0x00;   //cup正常工作
+  81   1              TCON = 0x50; //设定时器1开始计数
+  82   1              TH1 = 0xfd; // 9600 11.0592MHz 1200波特率e8
+  83   1              TL1 = 0xfd;
+  84   1              TI = 1;//发送数据标志
+  85   1              TR1 =1; //启动定时器1
+  86   1              ES=1;
+  87   1      //      LCD_Init();
+  88   1              
+  89   1      //      TMOD &= 0xF0;
+  90   1      //      TMOD |= 0x01;                                                                           //Timer 0 works in Mode 1 (16-bit Timer).
+  91   1      
+  92   1      //      TH0 = TH0_VALUE;
+  93   1      //      TL0 = TL0_VALUE;
+  94   1              
+  95   1      //      PrintChar(2, 0, '.');
+  96   1      //      PrintChar(6, 0, 'V');
+  97   1      //      PrintChar(11, 0, '.');
+  98   1      //      PrintChar(15, 0, 'A');
+  99   1      //      PrintChar(2, 1, '.');
+ 100   1      //      PrintChar(6, 1, 'W');
+ 101   1      //      PrintStr(10, 1, "R:0.8s");
+ 102   1              RefreshData(0x80);
+ 103   1                      RefreshData(0x8a);
+ 104   1              
+ 105   1      //      EA = 1;                                                                                                 //Global Interrupt Enable
+ 106   1      //      ET0 = 1;                                                                                                //Timer 0 Interrupt Enable
+ 107   1      //      TR0 = 1;                                                                                                //Enable Timer 0.
+ 108   1              
+ 109   1              while(1)
+ 110   1              {                
+ 111   2                      if(1)
+ 112   2                      {
+ 113   3                              RefreshData(0x80);
+ 114   3                              RefreshData(0x8a);
+ 115   3                              RefreshFlag = 0;
+ 116   3                      
+C51 COMPILER V9.00   POWER_METER_MAIN                                                      01/29/2018 17:41:55 PAGE 3   
+
+ 117   3                      }
+ 118   2                      
+ 119   2              //      if(BtnRefreshMode == 0)                         //If the refreshing-mode button is pressed
+ 120   2              //      {
+ 121   2              //              Delay_us(5000);
+ 122   2              //              if(BtnRefreshMode == 1)
+ 123   2              //              {
+ 124   2              //                      Delay_us(5000);                                         //Debouncing
+ 125   2              //                      if(BtnRefreshMode == 1)
+ 126   2              //                      {
+ 127   2              //                              RefreshRate= !RefreshRate;
+ 128   2              //                              if(RefreshRate)
+ 129   2              //                                      PrintChar(14, 1, '5');
+ 130   2      //                                      else
+ 131   2              //                                      PrintChar(14, 1, '8');
+ 132   2              //                      }
+ 133   2              //              }
+ 134   2              //      }
+ 135   2              }
+ 136   1      
+ 137   1              return 0;
+ 138   1      }
+ 139          
+ 140          //void Timer0ISR(void) interrupt 1 using 2
+ 141          //{
+ 142          //      static unsigned char Counter = 0;
+ 143          
+ 144          //      TH0 = TH0_VALUE;
+ 145          //      TL0 = TL0_VALUE;
+ 146                  
+ 147          //      if(Counter < 15-6*RefreshRate)  //Approximately 0.8s for slow-refreshing mode and 0.5s for fast-refreshi
+             -ng mode
+ 148          //              Counter++;
+ 149          //      else
+ 150          //      {
+ 151          //              Counter = 0;
+ 152          //              RefreshFlag = 1;
+ 153          //      }
+ 154          //}
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    129    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
